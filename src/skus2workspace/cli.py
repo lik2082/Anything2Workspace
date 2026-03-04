@@ -36,11 +36,17 @@ def main(verbose: bool):
     is_flag=True,
     help="Skip the interactive chatbot step",
 )
-def run(skus_dir: Path | None, workspace_dir: Path | None, skip_chatbot: bool):
+@click.option(
+    "--merge",
+    is_flag=True,
+    help="Merge into existing workspace instead of overwriting",
+)
+def run(skus_dir: Path | None, workspace_dir: Path | None, skip_chatbot: bool, merge: bool):
     """Run the full workspace pipeline."""
     pipeline = WorkspacePipeline(
         skus_dir=skus_dir,
         workspace_dir=workspace_dir,
+        merge=merge,
     )
 
     manifest = pipeline.run(skip_chatbot=skip_chatbot)
@@ -73,11 +79,17 @@ def run(skus_dir: Path | None, workspace_dir: Path | None, skip_chatbot: bool):
     type=click.Path(path_type=Path),
     help="Target workspace directory",
 )
-def assemble(skus_dir: Path | None, workspace_dir: Path | None):
+@click.option(
+    "--merge",
+    is_flag=True,
+    help="Merge into existing workspace instead of overwriting",
+)
+def assemble(skus_dir: Path | None, workspace_dir: Path | None, merge: bool):
     """Copy and organize SKUs into workspace (no chatbot)."""
     pipeline = WorkspacePipeline(
         skus_dir=skus_dir,
         workspace_dir=workspace_dir,
+        merge=merge,
     )
 
     manifest = pipeline.assemble_only()

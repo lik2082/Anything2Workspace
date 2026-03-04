@@ -29,9 +29,11 @@ class WorkspacePipeline:
         self,
         skus_dir: Path | None = None,
         workspace_dir: Path | None = None,
+        merge: bool = False,
     ):
         self.skus_dir = Path(skus_dir) if skus_dir else settings.skus_output_dir
         self.workspace_dir = Path(workspace_dir) if workspace_dir else settings.workspace_dir
+        self.merge = merge
 
     def run(self, skip_chatbot: bool = False) -> WorkspaceManifest:
         """
@@ -80,7 +82,7 @@ class WorkspacePipeline:
 
     def assemble_only(self) -> WorkspaceManifest:
         """Run only the assembly step."""
-        assembler = WorkspaceAssembler(self.skus_dir, self.workspace_dir)
+        assembler = WorkspaceAssembler(self.skus_dir, self.workspace_dir, merge=self.merge)
         return assembler.assemble()
 
     def chatbot_only(self) -> str:
