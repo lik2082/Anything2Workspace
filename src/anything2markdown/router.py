@@ -6,7 +6,7 @@ from pathlib import Path
 import structlog
 
 from .config import settings
-from .parsers import MarkItDownParser, MinerUParser, PaddleOCRVLParser, TabularParser
+from .parsers import ImageParser, MarkItDownParser, MinerUParser, PaddleOCRVLParser, TabularParser
 from .parsers.base import BaseParser
 from .url_parsers import BilibiliParser, FireCrawlParser, RepomixParser, YouTubeParser
 from .url_parsers.base import BaseURLParser
@@ -38,11 +38,19 @@ class Router:
         ".xlsx": "tabular",
         ".xls": "tabular",
         ".csv": "tabular",
+        # Images
+        ".jpg": "image",
+        ".jpeg": "image",
+        ".png": "image",
+        ".webp": "image",
+        ".gif": "image",
+        ".bmp": "image",
+        ".tiff": "image",
     }
 
     # Extensions to silently skip (no useful text content)
     SKIP_EXTENSIONS = {
-        ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg", ".ico", ".webp", ".tiff",
+        ".svg", ".ico",
         ".mp3", ".mp4", ".wav", ".avi", ".mov", ".flv", ".wmv",
         ".css", ".js", ".hhc", ".hhk",
     }
@@ -69,6 +77,7 @@ class Router:
         """Initialize all parsers."""
         # File parsers
         self.parsers: dict[str, BaseParser] = {
+            "image": ImageParser(),
             "markitdown": MarkItDownParser(),
             "mineru": MinerUParser(),
             "paddleocr_vl": PaddleOCRVLParser(),

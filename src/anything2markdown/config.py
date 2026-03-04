@@ -33,6 +33,7 @@ class Settings(BaseSettings):
 
     # SiliconFlow API
     siliconflow_base_url: str = Field(default="https://api.siliconflow.cn/v1")
+    vision_model: str = Field(default="glm-4v")  # Model for image understanding
 
     # PaddleOCR-VL Configuration
     paddleocr_model: str = Field(default="PaddlePaddle/PaddleOCR-VL-1.5")
